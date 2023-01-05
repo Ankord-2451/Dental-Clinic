@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
 {
+    
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,12 +19,15 @@ namespace Dental_Clinic.Controllers
         {
             _logger = logger;
         }
-
+        [HttpGet("Home/Index")]
+      
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet("Home/Privacy")]
+        
         public IActionResult Privacy()
         {
             return View();
