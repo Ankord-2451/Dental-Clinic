@@ -8,27 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
-{
-    
-    
+{  
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-        [HttpGet("Home/Index")]
-      
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet("Home/Privacy")]
-        
-        public IActionResult Privacy()
         {
             return View();
         }

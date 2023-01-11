@@ -25,6 +25,7 @@ namespace Dental_Clinic
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             //swagger
