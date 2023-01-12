@@ -1,21 +1,24 @@
 ﻿using Dental_Clinic.Data;
 using Dental_Clinic.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Text;
 
 namespace Dental_Clinic.Controllers
 {
     public class AuthorizationController : Controller
     {
+        public static IConfiguration _configuration { get; set; }
         private ApplicationDbContext dbContext { get; set; }
 
-        public AuthorizationController(ApplicationDbContext _dbContext)
+        public AuthorizationController(ApplicationDbContext _dbContext, IConfiguration configuration)
         {
             dbContext = _dbContext;
+            _configuration = configuration;
         }
 
         [HttpGet("Authorization/Form")]
@@ -39,11 +42,25 @@ namespace Dental_Clinic.Controllers
 
             if(employee != null) 
             {
-             //Some logic
+                var token = GenerateJWTToken(employee);
 
-             return View();
+             return Ok(token);
             }
             return StatusCode(401);
+        }
+
+        private string GenerateJWTToken(EmployeeModel employee)
+        {
+            var Tokenhendler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["JWT:key"]);
+            var descriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(employee.Role.ToString()),
+                Audience = employee.ID.ToString(),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            };
+            var token = Tokenhendler.CreateToken(descriptor);
+            return Tokenhendler.WriteToken(token);
         }
     }
 }
