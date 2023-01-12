@@ -68,6 +68,8 @@ namespace Dental_Clinic
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<Authmiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                endpoints.MapControllerRoute(
