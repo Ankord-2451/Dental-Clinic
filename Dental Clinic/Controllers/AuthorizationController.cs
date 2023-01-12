@@ -3,6 +3,7 @@ using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -55,7 +56,11 @@ namespace Dental_Clinic.Controllers
             var key = Encoding.UTF8.GetBytes(_configuration["JWT:key"]);
             var descriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(employee.Role.ToString()),
+               Claims= new Dictionary<string, object>
+               {
+                   {"Role",employee.Role},
+                   {"ID",employee.ID.ToString()}
+               },
                 Audience = employee.ID.ToString(),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
