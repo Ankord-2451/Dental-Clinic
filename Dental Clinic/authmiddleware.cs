@@ -22,12 +22,12 @@ namespace Dental_Clinic
 
         public async Task Invoke(HttpContext context)
         {
-            var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+            var authHeader = context.Request.Headers["Authorization"].First();
 
             if(authHeader!=null)
             {
                 var key = Encoding.UTF8.GetBytes(_configuration["JWT:key"]);
-                var token = authHeader.Split(" ").Last();
+                var token = authHeader.Split(" ").Last().ToString();
                 var TokenHandler = new JwtSecurityTokenHandler();
                 var validParam = new TokenValidationParameters()
                 {

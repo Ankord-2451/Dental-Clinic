@@ -44,8 +44,10 @@ namespace Dental_Clinic.Controllers
             if(employee != null) 
             {
                 var token = GenerateJWTToken(employee);
-
-             return Ok(token);
+                HttpContext.Request.Headers["Authorization"] =$"Bearer {token}" ;
+                
+                
+             return View();
             }
             return StatusCode(401);
         }
