@@ -1,4 +1,5 @@
-﻿using Dental_Clinic.Models;
+﻿using Dental_Clinic.Data;
+using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,14 @@ namespace Dental_Clinic.Controllers
 {
     public class BookingController : Controller
     {
+        private ApplicationDbContext dbContext { get; set; }
+
+        public BookingController(ApplicationDbContext _dbContext)
+        {
+            dbContext = _dbContext;
+        }
+
+
         [HttpGet("Booking")]
         public IActionResult Index()
         {
