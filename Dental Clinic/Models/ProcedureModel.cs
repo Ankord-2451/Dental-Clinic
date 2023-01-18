@@ -11,7 +11,7 @@ namespace Dental_Clinic.Models
     {
         [Key]
         [AutoIncrement]
-        public int ID { get; set; }
+        public int ID { get;set;}
 
         [Required]
         public string Name { get; set; }
@@ -24,9 +24,5 @@ namespace Dental_Clinic.Models
         
         [Required]
         public int NeedMinutesOnProcedure { get; set; }
-
-        [Required]
-        public List<EmployeeModel> Doctors { get; set; }
-
     }
 }
