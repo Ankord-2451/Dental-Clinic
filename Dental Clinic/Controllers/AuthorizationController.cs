@@ -3,12 +3,7 @@ using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 
 namespace Dental_Clinic.Controllers
 {
@@ -16,10 +11,12 @@ namespace Dental_Clinic.Controllers
     {
        
         private ApplicationDbContext dbContext { get; set; }
+        public static IConfiguration configuration { get; set; }
 
-        public AuthorizationController(ApplicationDbContext _dbContext)
+        public AuthorizationController(ApplicationDbContext _dbContext, IConfiguration _configuration)
         {
             dbContext = _dbContext;
+            configuration = _configuration;
         }
 
         [HttpGet("Authorization/Form")]
@@ -43,7 +40,8 @@ namespace Dental_Clinic.Controllers
 
             if(employee != null) 
             {
-                var token = GeneratorJWTTokens.GenerateJWTToken(employee);
+                var Geterator = new GeneratorJWTTokens(configuration);
+                var token = Geterator.GenerateJWTToken(employee);
                 HttpContext.Request.Headers["Authorization"] =$"Bearer {token}" ;
                 
                 

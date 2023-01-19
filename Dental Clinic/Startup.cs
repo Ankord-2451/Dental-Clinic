@@ -46,7 +46,7 @@ namespace Dental_Clinic
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false;
+                x.RequireHttpsMetadata = true;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -96,7 +96,7 @@ namespace Dental_Clinic
                endpoints.MapControllerRoute(
                   name: "default",
                   pattern: "{controller=Home}/{action=Index}/{id?}");
-               endpoints.MapRazorPages();
+                endpoints.MapRazorPages();
             });
         }
     }

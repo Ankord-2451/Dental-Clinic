@@ -19,7 +19,7 @@ namespace Dental_Clinic.Core
             configuration = _configuration;
         }
 
-        public static string GenerateJWTToken(EmployeeModel employee)
+        public string GenerateJWTToken(EmployeeModel employee)
         {
             var Tokenhendler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(configuration["JWT:key"]);

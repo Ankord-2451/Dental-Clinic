@@ -13,7 +13,7 @@ namespace Dental_Clinic
     public class Authmiddleware
     {
         private readonly RequestDelegate _next;
-        private string token;
+        private string token { get; set; }
 
         public static IConfiguration _configuration { get; set; }
         public Authmiddleware(RequestDelegate next, IConfiguration configuration)
@@ -24,8 +24,9 @@ namespace Dental_Clinic
 
         public async Task Invoke(HttpContext context)
         {
-            try { 
-            token = context.Request.Headers["Authorization"].First().Split(" ").Last().ToString();
+            try {
+               token = context.Request.Headers["Authorization"].First().Split(" ").Last().ToString();
+               
             }
             catch
             {
