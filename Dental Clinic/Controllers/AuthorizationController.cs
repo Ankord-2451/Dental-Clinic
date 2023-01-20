@@ -1,6 +1,7 @@
 ﻿using Dental_Clinic.Core;
 using Dental_Clinic.Data;
 using Dental_Clinic.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Dental_Clinic.Controllers
             {
                 var Geterator = new GeneratorJWTTokens(configuration);
                 var token = Geterator.GenerateJWTToken(employee);
-                HttpContext.Request.Headers["Authorization"] =$"Bearer {token}" ;
+                HttpContext.Session.SetString("token",$"Bearer {token}") ;
                 
                 
              return View();

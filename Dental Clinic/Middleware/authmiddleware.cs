@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
@@ -24,14 +22,9 @@ namespace Dental_Clinic
 
         public async Task Invoke(HttpContext context)
         {
-            try {
-               token = context.Request.Headers["Authorization"].First().Split(" ").Last().ToString();
-               
-            }
-            catch
-            {
-                token = null;
-            }
+          
+               token = context.Session.GetString("token")?.Split(" ").Last();
+           
             if(token!=null)
             {
                 var key = Encoding.UTF8.GetBytes(_configuration["JWT:key"]);

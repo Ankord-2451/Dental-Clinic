@@ -1,4 +1,5 @@
 using Dental_Clinic.Data;
+using Dental_Clinic.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,9 @@ namespace Dental_Clinic
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            //session
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             //swagger
             services.AddMvc();
 
@@ -77,7 +81,10 @@ namespace Dental_Clinic
             app.UseStaticFiles();
 
             app.UseRouting();
+            //session
+            app.UseSession();
 
+            app.UseMiddleware<TokenToContextMiddleware>();
             //swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
