@@ -41,11 +41,21 @@ namespace Dental_Clinic.Controllers
 
             if(employee != null) 
             {
+                //Object for work with session
+                var session = new SessionWorker(HttpContext);
+
                 //Set in session JWT Token for Authorization
                 var Geterator = new GeneratorJWTTokens(configuration);
                 var token = Geterator.GenerateJWTToken(employee);
-                HttpContext.Session.SetString("token",$"Bearer {token}") ;
+                
+                session.SaveToken(token);
                 //Set in session object type of AuthUserModel for Authentication
+                session.SaveUserModel(new AuthUserModel()
+                { 
+                    ID = employee.ID,
+                    name = employee.Name,
+                    role = employee.Role 
+                });
 
                 return View();
             }
