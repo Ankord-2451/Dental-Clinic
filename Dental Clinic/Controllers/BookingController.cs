@@ -10,7 +10,7 @@ namespace Dental_Clinic.Controllers
 {
     public class BookingController : Controller
     {
-        private ApplicationDbContext dbContext { get; set; }
+        private ApplicationDbContext dbContext;
 
         public BookingController(ApplicationDbContext _dbContext)
         {

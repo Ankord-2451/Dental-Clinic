@@ -12,7 +12,7 @@ namespace Dental_Clinic.Controllers
 {
     public class ListOfDoctorsController : Controller
     {
-        private ApplicationDbContext dbContext { get; set; }
+        private ApplicationDbContext dbContext;
 
         public ListOfDoctorsController(ApplicationDbContext _dbContext)
         {

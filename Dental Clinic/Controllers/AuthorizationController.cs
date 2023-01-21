@@ -11,7 +11,7 @@ namespace Dental_Clinic.Controllers
 {
     public class AuthorizationController : Controller
     {
-        private ApplicationDbContext dbContext { get; set; }
+        private ApplicationDbContext dbContext;
 
         public AuthorizationController(ApplicationDbContext _dbContext)
         {
