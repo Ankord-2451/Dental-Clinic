@@ -1,8 +1,10 @@
-﻿
+﻿@model AuthUserModel
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h6>Доступ разрешен</h6>
+<h3>@Model.ID</h3>
+<h3>Добро пожаловать мистер, @Model.name</h3>
 
