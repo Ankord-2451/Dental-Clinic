@@ -1,21 +1,23 @@
-﻿using Dental_Clinic.Data;
+﻿using Dental_Clinic.Core;
+using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
 {
     public class AuthorizationController : Controller
     {
+       
         private ApplicationDbContext dbContext { get; set; }
+        public static IConfiguration configuration { get; set; }
 
-        public AuthorizationController(ApplicationDbContext _dbContext)
+        public AuthorizationController(ApplicationDbContext _dbContext, IConfiguration _configuration)
         {
             dbContext = _dbContext;
+            configuration = _configuration;
         }
 
         [HttpGet("Authorization/Form")]
@@ -39,11 +41,26 @@ namespace Dental_Clinic.Controllers
 
             if(employee != null) 
             {
-             //Some logic
+                //Object for work with session
+                var session = new SessionWorker(HttpContext);
 
-             return View();
+                //Set in session JWT Token for Authorization
+                var Geterator = new GeneratorJWTTokens(configuration);
+                var token = Geterator.GenerateJWTToken(employee);
+                
+                session.SaveToken(token);
+                //Set in session object type of AuthUserModel for Authentication
+                session.SaveUserModel(new AuthUserModel()
+                { 
+                    ID = employee.ID,
+                    name = employee.Name,
+                    role = employee.Role 
+                });
+
+                return View();
             }
             return StatusCode(401);
         }
+
     }
 }
