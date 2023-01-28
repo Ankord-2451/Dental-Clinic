@@ -1,12 +1,15 @@
 using Dental_Clinic.Data;
+using Dental_Clinic.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace Dental_Clinic
 {
@@ -28,6 +31,9 @@ namespace Dental_Clinic
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            //session
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             //swagger
             services.AddMvc();
 
@@ -36,6 +42,23 @@ namespace Dental_Clinic
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dental - Clinic", Version = "v1" });
             });
             services.AddSwaggerGenNewtonsoftSupport();
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+
+            });
 
         }
 
@@ -57,7 +80,10 @@ namespace Dental_Clinic
             app.UseStaticFiles();
 
             app.UseRouting();
+            //session
+            app.UseSession();
 
+            app.UseMiddleware<TokenToContextMiddleware>();
             //swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -67,13 +93,14 @@ namespace Dental_Clinic
 
             app.UseAuthentication();
             app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {
                endpoints.MapControllerRoute(
                   name: "default",
                   pattern: "{controller=Home}/{action=Index}/{id?}");
-               endpoints.MapRazorPages();
+                endpoints.MapRazorPages();
             });
         }
     }
