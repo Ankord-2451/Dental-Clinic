@@ -10,9 +10,9 @@ namespace Dental_Clinic.Controllers
 {
     public class AuthorizationController : Controller
     {
-       
-        private ApplicationDbContext dbContext { get; set; }
-        public static IConfiguration configuration { get; set; }
+
+        private ApplicationDbContext dbContext;
+        public static IConfiguration configuration;
 
         public AuthorizationController(ApplicationDbContext _dbContext, IConfiguration _configuration)
         {

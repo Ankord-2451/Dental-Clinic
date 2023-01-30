@@ -13,7 +13,7 @@ namespace Dental_Clinic.Controllers
     [Authorize]
     public class ListOfProceduresController : Controller
     {
-        private ApplicationDbContext dbContext { get; set; }
+        private ApplicationDbContext dbContext;
 
         public ListOfProceduresController(ApplicationDbContext _dbContext)
         {
