@@ -1,5 +1,6 @@
 ﻿using Dental_Clinic.Data;
 using Dental_Clinic.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,22 +10,24 @@ using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
 {
+    [Authorize]
     public class ListOfProceduresController : Controller
     {
-        private ApplicationDbContext dbContext { get; set; }
+        private ApplicationDbContext dbContext;
 
         public ListOfProceduresController(ApplicationDbContext _dbContext)
         {
             dbContext = _dbContext;
         }
 
-
+        [AllowAnonymous]
         [HttpGet("ListOfProcedures")]
         public ActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet("ListOfProcedures/Details/{id?}")]
         public ActionResult Details(int id)
         {
