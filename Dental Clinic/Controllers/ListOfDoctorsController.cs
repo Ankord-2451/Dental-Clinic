@@ -34,11 +34,13 @@ namespace Dental_Clinic.Controllers
             return View(doctors);
         }
 
-        [AllowAnonymous]
+
+
         [HttpGet("ListOfDoctors/Details/{id?}")]
         public ActionResult Details(int id)
         {
-            return View();
+            EmployeeModel doctor = dbContext.employees.First(x => x.ID == id);
+            return View(doctor);
         }
 
 
@@ -70,7 +72,7 @@ namespace Dental_Clinic.Controllers
 
 
 
-        [HttpDelete("ListOfDoctors/Delete/{id?}")]
+        [HttpPost("ListOfDoctors/Delete/{id?}")]
         public ActionResult Delete(int id)
         {          
           return RedirectToAction(nameof(Index));          

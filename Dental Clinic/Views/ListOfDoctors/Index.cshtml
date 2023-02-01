@@ -24,3 +24,7 @@
             </tr> 
         }
     </table>
+     @if ((bool)ViewData["IsAdmin"])
+     {
+      <div class ="text-center"><a asp-action="Create" asp-controller="ListOfDoctors">+Add Employee</a></div>
+     }
