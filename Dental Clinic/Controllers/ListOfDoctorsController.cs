@@ -1,7 +1,13 @@
-﻿using Dental_Clinic.Data;
+﻿using Dental_Clinic.Core;
+using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 
 namespace Dental_Clinic.Controllers
 {
@@ -19,7 +25,13 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfDoctors")]
         public ActionResult Index()
         {
-            return View();
+            //Check if have acсess to details
+            var sessionWorker = new SessionWorker(HttpContext);
+            ViewData["IsAdmin"] = sessionWorker.IsAdmin();
+
+            List<EmployeeModel> doctors  =dbContext.employees.Where(x => x.Role == role.Doctor).ToList();
+           
+            return View(doctors);
         }
 
         [AllowAnonymous]

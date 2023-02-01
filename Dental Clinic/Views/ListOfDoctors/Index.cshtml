@@ -1,8 +1,26 @@
-﻿
+﻿@model IEnumerable<Dental_Clinic.Models.EmployeeModel>
+
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Doctors";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>View</h1>
+<h1> List Of Doctors </h1>
 
+    <table class="table">
+        <tr>
+            <th>Name</th>
+        <th><div class="text-center">Description</div></th>
+        <th></th>
+        @foreach (var item in Model)
+        {         
+        <tr>
+                  <td>@item.Name</td>
+            <td><div class="text-center"> @item.Description </div></td>
+                @if ((bool)ViewData["IsAdmin"])
+                {
+                <td><a asp-action="Details" asp-controller="ListOfDoctors" asp-route-id="@item.ID">Details</a></td>
+                }
+            </tr> 
+        }
+    </table>
