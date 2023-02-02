@@ -54,6 +54,8 @@ namespace Dental_Clinic.Controllers
         [HttpPost("ListOfDoctors/Create")]
         public ActionResult Create(EmployeeModel employee)
         {         
+            dbContext.employees.Add(employee);
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));          
         }
 
