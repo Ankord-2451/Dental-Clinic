@@ -29,9 +29,16 @@ namespace Dental_Clinic.Controllers
             var sessionWorker = new SessionWorker(HttpContext);
             ViewData["IsAdmin"] = sessionWorker.IsAdmin();
 
-            List<EmployeeModel> doctors  =dbContext.employees.Where(x => x.Role == role.Doctor).ToList();
-           
-            return View(doctors);
+            List<EmployeeModel> employees;
+            if (sessionWorker.IsAdmin())
+            {
+             employees  = dbContext.employees.ToList();
+            }
+             else
+             {
+              employees = dbContext.employees.Where(x => x.Role == role.Doctor).ToList();
+             }
+            return View(employees);
         }
 
 
