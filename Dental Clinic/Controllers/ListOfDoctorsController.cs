@@ -61,13 +61,17 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfDoctors/Edit/{id?}")]
         public ActionResult Edit(int id)
         {
-            return View();
+            EmployeeModel doctor = dbContext.employees.First(x => x.ID == id);
+
+            return View(doctor);
         }
 
         [HttpPost("ListOfDoctors/Edit/{id?}")]
         public ActionResult Edit(int id,EmployeeModel employee)
-        {          
-                return RedirectToAction(nameof(Index));
+        {
+            dbContext.employees.Update(employee);
+            dbContext.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
 
