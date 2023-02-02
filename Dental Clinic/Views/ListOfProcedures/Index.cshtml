@@ -20,12 +20,12 @@
                   <td><div class="text-center">Hours :@item.NeedHoursOnProcedure minuts : @item.NeedMinutesOnProcedure</div></td>
                 @if ((bool)ViewData["IsAdmin"])
                 {
-                <td><a asp-action="Details" asp-controller="ListOfProcedure" asp-route-id="@item.ID">Details</a></td>
+                <td><a asp-action="Details" asp-controller="ListOfProcedures" asp-route-id="@item.ID">Details</a></td>
                 }
         </tr>
         }
 </table>
 @if ((bool)ViewData["IsAdmin"])
 {
-    <div class="text-center"><a asp-action="Create" asp-controller="ListOfProcedure">+Add Procedure</a></div>
+    <div class="text-center"><a asp-action="Create" asp-controller="ListOfProcedures">+Add Procedure</a></div>
 }

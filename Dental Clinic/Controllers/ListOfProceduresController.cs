@@ -38,7 +38,8 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfProcedures/Details/{id?}")]
         public ActionResult Details(int id)
         {
-            return View();
+            ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
+            return View(procedure);
         }
 
 

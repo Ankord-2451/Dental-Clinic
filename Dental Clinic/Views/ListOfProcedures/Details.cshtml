@@ -1,8 +1,34 @@
-﻿
+﻿@model Dental_Clinic.Models.ProcedureModel
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="text-center">
+    <h1>@Model.Name</h1>
+    <p>
+        <form asp-controller="ListOfProcedures" asp-action="Delete" method="post" asp-route-id="@Model.ID">
+            <input type="submit" value="Delete" />
+        </form>
+    </p>
+</div>
 
+
+
+<h3>ID :</h3>
+<p>@Model.ID</p>
+
+<h3>Name :</h3>
+<p>@Model.Name</p>
+
+<h3>Description :</h3>
+<p>@Model.Description</p>
+
+<h3>Hours :</h3>
+<p>@Model.NeedHoursOnProcedure</p>
+
+<h3>Minutes :</h3>
+<p>@Model.NeedMinutesOnProcedure</p>
+
+<a asp-action="Edit" asp-controller="ListOfProcedures" asp-route-id="@Model.ID">Edit</a>
