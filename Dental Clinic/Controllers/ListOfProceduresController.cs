@@ -53,6 +53,8 @@ namespace Dental_Clinic.Controllers
         [HttpPost("ListOfProcedures/Create")]
         public ActionResult Create(ProcedureModel procedure)
         {
+            dbContext.ListOfProcedure.Add(procedure);   
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 

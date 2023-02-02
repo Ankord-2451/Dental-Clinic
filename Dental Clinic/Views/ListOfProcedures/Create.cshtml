@@ -1,8 +1,36 @@
-﻿
+﻿@model Dental_Clinic.Models.ProcedureModel
+
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
 
+<div class="text-center">
+    <form method="post">
+        <label name="name">name:</label>
+        <input type="text" asp-for="Name"/>
+        <span asp-validation-for="Name"></span>
+        <br />
+        <br />
+        <label name="NeedHoursOnProcedure">Hours :</label>
+        <input asp-for="NeedHoursOnProcedure" min="0" max="8"/>
+        <span asp-validation-for="NeedHoursOnProcedure"></span>
+        <br />
+        <br />
+        <label name="NeedMinutesOnProcedure">Minutes :</label>
+        <input asp-for="NeedMinutesOnProcedure" min="0" max="60"/>
+        <span asp-validation-for="NeedMinutesOnProcedure"></span>
+        <br />
+        <br />
+        <label name="Description">Description :</label>
+        <textarea asp-for="Description"></textarea>
+        <span asp-validation-for="Description"></span>
+        <br />
+        <br />
+        <button type="submit">Add</button>
+    </form>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+</div>
