@@ -76,9 +76,12 @@ namespace Dental_Clinic.Controllers
 
 
 
-        [HttpDelete("ListOfProcedures/Delete/{id?}")]
+        [HttpPost("ListOfProcedures/Delete/{id?}")]
         public ActionResult Delete(int id)
         {
+            ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
+            dbContext.ListOfProcedure.Remove(procedure);
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }
