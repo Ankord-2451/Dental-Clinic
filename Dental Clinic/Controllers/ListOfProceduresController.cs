@@ -60,12 +60,15 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfProcedures/Edit/{id?}")]
         public ActionResult Edit(int id)
         {
-            return View();
+            ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
+            return View(procedure);
         }
 
         [HttpPost("ListOfProcedures/Edit/{id?}")]
         public ActionResult Edit(int id, ProcedureModel procedure)
         {
+            dbContext.ListOfProcedure.Update(procedure);
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
