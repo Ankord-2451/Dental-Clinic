@@ -80,7 +80,10 @@ namespace Dental_Clinic.Controllers
 
         [HttpPost("ListOfDoctors/Delete/{id?}")]
         public ActionResult Delete(int id)
-        {          
+        {
+            EmployeeModel employee = dbContext.employees.First(x => x.ID == id);
+            dbContext.employees.Remove(employee);
+            dbContext.SaveChanges();
           return RedirectToAction(nameof(Index));          
         }
     }
