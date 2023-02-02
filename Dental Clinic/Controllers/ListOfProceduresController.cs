@@ -1,4 +1,5 @@
-﻿using Dental_Clinic.Data;
+﻿using Dental_Clinic.Core;
+using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,11 +24,17 @@ namespace Dental_Clinic.Controllers
         [AllowAnonymous]
         [HttpGet("ListOfProcedures")]
         public ActionResult Index()
-        {
-            return View();
+        { 
+            //Check if have acсess to details
+            var sessionWorker = new SessionWorker(HttpContext);
+            ViewData["IsAdmin"] = sessionWorker.IsAdmin();
+
+            List<ProcedureModel> Procedures = dbContext.ListOfProcedure.ToList();
+
+            return View(Procedures);
         }
 
-        [AllowAnonymous]
+
         [HttpGet("ListOfProcedures/Details/{id?}")]
         public ActionResult Details(int id)
         {
