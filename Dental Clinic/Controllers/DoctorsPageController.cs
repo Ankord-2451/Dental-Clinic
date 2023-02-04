@@ -49,6 +49,8 @@ namespace Dental_Clinic.Controllers
         [HttpGet("DoctorsPage/Edit/{id?}")]
         public ActionResult Edit(int id,string Time_problem_message)
         {
+           
+
             ViewData["ListOfDoctors"] = dbContext.employees.Where(e => e.Role == role.Doctor).ToList();
 
             ViewData["ListOfProcedures"] = dbContext.ListOfProcedure.ToList();
@@ -56,6 +58,8 @@ namespace Dental_Clinic.Controllers
             ViewData["Time_problem_message"] = Time_problem_message;
 
             EntryFormModel record = dbContext.ListOfRecords.First(x => x.ID == id);
+
+            ViewData["Date-Time"] = $"{record.StartOfProcedure.Year}-{record.StartOfProcedure.Month}-{record.StartOfProcedure.Day}T{record.StartOfProcedure.Hour}:{record.StartOfProcedure.Minute}";
 
             return View(record);
         }
@@ -67,7 +71,6 @@ namespace Dental_Clinic.Controllers
 
             if (ModelState.IsValid)
             {
-
                 ProcedureModel procedure = dbContext.ListOfProcedure.First(e => e.Name == record.Procedure);
                 Time_problem_message = CheckTimeHelper.Check(
                   record,
@@ -79,9 +82,10 @@ namespace Dental_Clinic.Controllers
 
                 if (Time_problem_message == null)
                 {
+                    dbContext.Remove(dbContext.ListOfRecords.First(x=> x.ID==record.ID));
                     dbContext.ListOfRecords.Add(record);
                     dbContext.SaveChanges();
-                    return Index();
+                    return RedirectToAction(nameof(Index));
                 }
             }
             return Edit(record.ID,Time_problem_message);
@@ -92,8 +96,7 @@ namespace Dental_Clinic.Controllers
         [HttpPost("DoctorsPage/Delete/{id?}")]
         public ActionResult Delete(int id)
         {
-            EntryFormModel record = dbContext.ListOfRecords.First(x => x.ID == id);
-            dbContext.ListOfRecords.Remove(record);
+            dbContext.ListOfRecords.Remove(dbContext.ListOfRecords.First(x => x.ID == id));
             dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
