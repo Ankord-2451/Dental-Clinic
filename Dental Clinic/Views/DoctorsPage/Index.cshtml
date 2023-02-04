@@ -21,8 +21,9 @@
 
         <th>Beginning</th>
 
-        <th></th>
-        <th></th>
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
         @foreach (var item in Model)
         {         
         <tr>
@@ -49,10 +50,12 @@
             <td>@item.StartOfProcedure.ToString("g")</td>
             
                 <td><a asp-action="Details" asp-controller="DoctorsPage" asp-route-id="@item.ID">Details</a></td>
+         
+                <td><a asp-action="Edit" asp-controller="DoctorsPage" asp-route-id="@item.ID">Edit</a></td> 
              
                 <td>
                  <form asp-controller="DoctorsPage" asp-action="Delete" method="post" asp-route-id="@item.ID">
-                    <input type="submit" value="Удалить" />
+                    <input type="submit" value="Delete" />
                  </form>
                 </td>
             </tr> 

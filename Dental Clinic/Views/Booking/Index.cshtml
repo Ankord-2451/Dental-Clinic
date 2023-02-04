@@ -6,6 +6,13 @@
 
     <h1 class="text-center">Dentist Booking form</h1>
 
+@if ((bool)ViewData["Authorized"])
+{
+    <div class ="text-center">      
+    <a asp-action="Index" asp-controller="DoctorsPage">List Of Records</a>
+    </div>
+}
+
     <br />
     <br />
 

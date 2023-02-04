@@ -2,11 +2,8 @@
 using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Completion;
-using System;
-using System.Collections.Generic;
+using NuGet.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
 {
@@ -23,8 +20,11 @@ namespace Dental_Clinic.Controllers
         [HttpGet("Booking")]
         public IActionResult Index(string Time_problem_message)
         {
+            var sessionWorker = new SessionWorker(HttpContext);
 
-                ViewData["ListOfDoctors"] = dbContext.employees.Where(e => e.Role == role.Doctor).ToList();
+            ViewData["Authorized"] = sessionWorker.IsAuthorized();
+
+            ViewData["ListOfDoctors"] = dbContext.employees.Where(e => e.Role == role.Doctor).ToList();
 
                 ViewData["ListOfProcedures"] = dbContext.ListOfProcedure.ToList();
 

@@ -42,7 +42,7 @@
             <br />
             <div>
                 Check doctor availability :
-                <input type="datetime-local" asp-for="StartOfProcedure" value="@((string)ViewData["Date-Time"])" />
+                <input type="datetime-local" asp-for="StartOfProcedure" value="@Model.StartOfProcedure.ToString("s")" />
                 <span asp-validation-for="StartOfProcedure" class="text-danger"></span>
 
                 @((string)ViewData["Date-Time"])

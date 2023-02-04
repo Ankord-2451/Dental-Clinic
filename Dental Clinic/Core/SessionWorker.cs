@@ -52,5 +52,12 @@ namespace Dental_Clinic.Core
             }
             return false;
         }
+
+        public bool IsAuthorized()
+        {
+            var user = Context.Session.GetString("user");
+
+            return (user != null);
+        }
     }
 }

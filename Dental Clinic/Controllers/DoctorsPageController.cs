@@ -59,7 +59,6 @@ namespace Dental_Clinic.Controllers
 
             EntryFormModel record = dbContext.ListOfRecords.First(x => x.ID == id);
 
-            ViewData["Date-Time"] = $"{record.StartOfProcedure.Year}-{record.StartOfProcedure.Month}-{record.StartOfProcedure.Day}T{record.StartOfProcedure.Hour}:{record.StartOfProcedure.Minute}";
 
             return View(record);
         }
