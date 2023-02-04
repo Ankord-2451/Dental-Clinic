@@ -1,0 +1,38 @@
+﻿@model Dental_Clinic.Models.EntryFormModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1>Record of @Model.UserName</h1> 
+</div>
+   
+
+
+<h3>ID :</h3>
+<p>@Model.ID</p>
+
+<h3>Name :</h3>
+<p>@Model.UserName</p>
+
+<h3>Doctor :</h3>
+<p>@Model.Doctor</p>
+
+<h3>Procedure :</h3>
+<p>@Model.Procedure</p>
+
+<h3>Beginning :</h3>
+<p>@Model.StartOfProcedure</p>
+
+<h3>Planned End Of Procedure :</h3>
+<p>@Model.EndOfProcedure</p>
+
+<h3>User Email :</h3>
+<p>@Model.UserEmail</p>
+
+<h3>User Phone Number :</h3>
+<p>@Model.UserPhoneNumber</p>
+
+<h3>Comment :</h3>
+<p>@Model?.Comment</p>
