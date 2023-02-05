@@ -2,12 +2,9 @@
 using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
 {
@@ -24,7 +21,7 @@ namespace Dental_Clinic.Controllers
         [AllowAnonymous]
         [HttpGet("ListOfProcedures")]
         public ActionResult Index()
-        { 
+        {
             //Check if have acсess to details
             var sessionWorker = new SessionWorker(HttpContext);
             ViewData["IsAdmin"] = sessionWorker.IsAdmin();
@@ -38,8 +35,13 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfProcedures/Details/{id?}")]
         public ActionResult Details(int id)
         {
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
             ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
             return View(procedure);
+            }
+            return StatusCode(401);
         }
 
 
@@ -47,31 +49,53 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfProcedures/Create")]
         public ActionResult Create()
         {
-            return View();
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                return View();
+            }
+            return StatusCode(401);
         }
 
         [HttpPost("ListOfProcedures/Create")]
         public ActionResult Create(ProcedureModel procedure)
         {
-            dbContext.ListOfProcedure.Add(procedure);   
-            dbContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                dbContext.ListOfProcedure.Add(procedure);
+                dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            } 
+            return StatusCode(401);
         }
+           
+    
 
 
         [HttpGet("ListOfProcedures/Edit/{id?}")]
         public ActionResult Edit(int id)
         {
-            ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
-            return View(procedure);
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
+                return View(procedure);
+            }
+            return StatusCode(401);
         }
 
         [HttpPost("ListOfProcedures/Edit/{id?}")]
         public ActionResult Edit(int id, ProcedureModel procedure)
         {
-            dbContext.ListOfProcedure.Update(procedure);
-            dbContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                dbContext.ListOfProcedure.Update(procedure);
+                dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return StatusCode(401);
         }
 
 
@@ -79,10 +103,15 @@ namespace Dental_Clinic.Controllers
         [HttpPost("ListOfProcedures/Delete/{id?}")]
         public ActionResult Delete(int id)
         {
-            ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
-            dbContext.ListOfProcedure.Remove(procedure);
-            dbContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                ProcedureModel procedure = dbContext.ListOfProcedure.First(x => x.ID == id);
+                 dbContext.ListOfProcedure.Remove(procedure);
+                 dbContext.SaveChanges();
+                 return RedirectToAction(nameof(Index));
+            }
+            return StatusCode(401);
         }
     }
 }

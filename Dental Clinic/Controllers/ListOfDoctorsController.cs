@@ -2,12 +2,9 @@
 using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 
 namespace Dental_Clinic.Controllers
 {
@@ -19,6 +16,7 @@ namespace Dental_Clinic.Controllers
         public ListOfDoctorsController(ApplicationDbContext _dbContext)
         {
             dbContext = _dbContext;
+           
         }
 
         [AllowAnonymous]
@@ -46,8 +44,13 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfDoctors/Details/{id?}")]
         public ActionResult Details(int id)
         {
-            EmployeeModel doctor = dbContext.employees.First(x => x.ID == id);
-            return View(doctor);
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                EmployeeModel doctor = dbContext.employees.First(x => x.ID == id);
+                return View(doctor);
+            }
+            return StatusCode(401);
         }
 
 
@@ -55,32 +58,52 @@ namespace Dental_Clinic.Controllers
         [HttpGet("ListOfDoctors/Create")]
         public ActionResult Create()
         {
-            return View();
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                return View();
+            }
+            return StatusCode(401);
         }
       
         [HttpPost("ListOfDoctors/Create")]
         public ActionResult Create(EmployeeModel employee)
-        {         
-            dbContext.employees.Add(employee);
-            dbContext.SaveChanges();
-            return RedirectToAction(nameof(Index));          
+        {
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                dbContext.employees.Add(employee);
+                dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return StatusCode(401);
         }
 
 
         [HttpGet("ListOfDoctors/Edit/{id?}")]
         public ActionResult Edit(int id)
         {
-            EmployeeModel doctor = dbContext.employees.First(x => x.ID == id);
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                EmployeeModel doctor = dbContext.employees.First(x => x.ID == id);
 
-            return View(doctor);
+                return View(doctor);
+            }
+            return StatusCode(401);
         }
 
         [HttpPost("ListOfDoctors/Edit/{id?}")]
         public ActionResult Edit(int id,EmployeeModel employee)
         {
-            dbContext.employees.Update(employee);
-            dbContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                dbContext.employees.Update(employee);
+                dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return StatusCode(401);
         }
 
 
@@ -88,10 +111,15 @@ namespace Dental_Clinic.Controllers
         [HttpPost("ListOfDoctors/Delete/{id?}")]
         public ActionResult Delete(int id)
         {
-            EmployeeModel employee = dbContext.employees.First(x => x.ID == id);
-            dbContext.employees.Remove(employee);
-            dbContext.SaveChanges();
-          return RedirectToAction(nameof(Index));          
+            var sessionWorker = new SessionWorker(HttpContext);
+            if (sessionWorker.IsAdmin())
+            {
+                EmployeeModel employee = dbContext.employees.First(x => x.ID == id);
+                dbContext.employees.Remove(employee);
+                dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return StatusCode(401);
         }
     }
 }
