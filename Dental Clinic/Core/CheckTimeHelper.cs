@@ -1,4 +1,5 @@
 ﻿using Dental_Clinic.Models;
+using Microsoft.EntityFrameworkCore.Update;
 using System;
 using System.Collections.Generic;
 
@@ -12,39 +13,32 @@ namespace Dental_Clinic.Core
             Records = _Records;
   
             Record.EndOfProcedure = Record.StartOfProcedure.AddHours(Hours).AddMinutes(Minutes);
-            if (CheckTime(Record))
-            {
-                return null;
-            }
-            else
-            {
-                return "Wrong time";
-            }
-
+            
+            return CheckTime(Record);
         }
 
 
-        private static bool CheckTime(EntryFormModel Record)
+        private static string CheckTime(EntryFormModel Record)
         {
             if (Record.StartOfProcedure <= DateTime.Now)
             {
-                return false;
+                return "You can't put a record in the past \n choose another time";
             }
 
-            if (Record.StartOfProcedure.Hour < 6 || Record.StartOfProcedure.Hour > 20)
+            if (Record.StartOfProcedure.Hour < 6 || Record.EndOfProcedure.Hour > 20)
             {
-                return false;
+                return "We work from 6 to 8 \n choose another time";
             }
 
             if (Record.StartOfProcedure.DayOfWeek == DayOfWeek.Sunday)
             {
-                return false;
+                return "We don't work on Sunday \n choose another day";
             }
 
             return Comparison_With_Time_Of_Other_Users(Record);
         }
 
-        private static bool Comparison_With_Time_Of_Other_Users(EntryFormModel user)
+        private static string Comparison_With_Time_Of_Other_Users(EntryFormModel user)
         {
             bool ResultOfComparison = true;
             foreach (var item in Records)
@@ -57,8 +51,12 @@ namespace Dental_Clinic.Core
                 if (!ResultOfComparison) break;
             }
 
-
-            return ResultOfComparison;
+            if(ResultOfComparison)
+            {
+                return null;
+            }
+            return "Time isn't available \n choose another time";
+            
         }
 
         private static bool Comparison_Of_Time_Gaps(EntryFormModel userFromDataBase, EntryFormModel user)
