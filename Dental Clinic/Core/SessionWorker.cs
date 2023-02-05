@@ -59,5 +59,9 @@ namespace Dental_Clinic.Core
 
             return (user != null);
         }
+        public void Clear()
+        {
+          Context.Session.Clear();
+        }
     }
 }

@@ -23,7 +23,12 @@ namespace Dental_Clinic.Controllers
         [HttpGet("Authorization/Form")]
         public ActionResult Index()
         {
-           return View();
+            var session = new SessionWorker(HttpContext);
+            if (session.IsAuthorized())
+            {
+                return View("Auth",session.GetUserName());
+            }
+             return View();
         }
 
         [HttpPost("Authorization/Form")]
@@ -57,10 +62,17 @@ namespace Dental_Clinic.Controllers
                     role = employee.Role 
                 });
 
-                return View();
+                return RedirectToAction(nameof(Index));
             }
             return StatusCode(401);
         }
 
+        [HttpPost("Authorization/LogOut")]
+        public ActionResult LogOut()
+        {
+            var session = new SessionWorker(HttpContext);
+            session.Clear();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
