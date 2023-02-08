@@ -2,6 +2,7 @@
 using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using NuGet.Configuration;
 using System.Linq;
 
@@ -10,10 +11,12 @@ namespace Dental_Clinic.Controllers
     public class BookingController : Controller
     {
         private ApplicationDbContext dbContext;
+        private SendGridSendler Sendler;
 
-        public BookingController(ApplicationDbContext _dbContext)
+        public BookingController(ApplicationDbContext _dbContext,IConfiguration configuration)
         {
             dbContext = _dbContext;
+            Sendler = new SendGridSendler(configuration);
         }
 
 
@@ -54,6 +57,8 @@ namespace Dental_Clinic.Controllers
                 {
                    dbContext.ListOfRecords.Add(entryForm);
                    dbContext.SaveChanges();
+
+                   Sendler.SendRegistrationEmail(entryForm);
                 }
             }
             return Index(Time_problem_message);
