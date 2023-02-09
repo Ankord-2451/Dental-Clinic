@@ -40,6 +40,7 @@ namespace Dental_Clinic.Controllers
         public IActionResult Index(EntryFormModel entryForm)
         {  
             string Time_problem_message = null;
+            var sessionWorker = new SessionWorker(HttpContext);
 
             if (ModelState.IsValid)
             {
@@ -58,7 +59,11 @@ namespace Dental_Clinic.Controllers
                    dbContext.ListOfRecords.Add(entryForm);
                    dbContext.SaveChanges();
 
-                   Sendler.SendRegistrationEmail(entryForm);
+                    //if user is Authorized we don't send email on corporate mailbox
+                    if (!sessionWorker.IsAuthorized())
+                    { 
+                      Sendler.SendRegistrationEmail(entryForm);
+                    }
 
                     return RedirectToAction("success");
                 }
