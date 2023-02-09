@@ -59,9 +59,17 @@ namespace Dental_Clinic.Controllers
                    dbContext.SaveChanges();
 
                    Sendler.SendRegistrationEmail(entryForm);
+
+                    return RedirectToAction("success");
                 }
             }
             return Index(Time_problem_message);
+        }
+
+        [HttpGet("Booking/success")]
+        public IActionResult success()
+        {
+            return View();
         }
     }
 }
