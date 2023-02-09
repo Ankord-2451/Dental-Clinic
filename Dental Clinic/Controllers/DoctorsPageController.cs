@@ -3,6 +3,8 @@ using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,15 +25,25 @@ namespace Dental_Clinic.Controllers
         [HttpGet("DoctorsPage")]
         public ActionResult Index()
         {
-           
-            var sessionWorker = new SessionWorker(HttpContext);
-            
-            string NameOfDoctor = sessionWorker.GetUserName();
+            var records = new List<EntryFormModel>();
 
-            List<EntryFormModel> records = dbContext.ListOfRecords.
-                Where(x=>x.Doctor==NameOfDoctor).
-                      OrderByDescending(x => x.ID).ToList();
-           
+           if (records.IsNullOrEmpty())
+            { 
+            var sessionWorker = new SessionWorker(HttpContext);
+
+                //if user is admin then return all records
+                if (sessionWorker.IsAdmin())
+                {
+                    records = dbContext.ListOfRecords.OrderByDescending(x => x.ID).ToList();
+                }
+                else { 
+                   string NameOfDoctor = sessionWorker.GetUserName();
+
+                    records = dbContext.ListOfRecords.
+                         Where(x=>x.Doctor==NameOfDoctor).
+                             OrderByDescending(x => x.ID).ToList();
+                }
+           }
             return View(records);
         }
 
@@ -99,5 +111,31 @@ namespace Dental_Clinic.Controllers
             dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
+
+        //Addition
+
+        [HttpPost("DoctorsPage/FindByDate/{date?}")]
+        public ActionResult FindByDate(DateTime date)
+        {
+            var sessionWorker = new SessionWorker(HttpContext);
+            var records = new List<EntryFormModel>();
+
+            //if user is admin then return records from all doctors
+            if (sessionWorker.IsAdmin())
+            {
+                records = dbContext.ListOfRecords.
+                    Where(x => x.StartOfProcedure.Date == date.Date).ToList();
+            }
+            else { 
+
+               string NameOfDoctor = sessionWorker.GetUserName();
+
+               records = dbContext.ListOfRecords.
+                 Where(x => (x.Doctor == NameOfDoctor)&& (x.StartOfProcedure.Date == date.Date)).ToList();
+            }
+
+            return View("Index", records);
+        }
+
     }
 }
