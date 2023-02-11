@@ -36,6 +36,9 @@ namespace Dental_Clinic.Controllers
         {
             EmployeeModel employee;
 
+           login = Encoder.Encode(configuration, login);
+           password = Encoder.Encode(configuration, password);
+
             try { 
             employee = dbContext.employees.First(e => (e.Login == login) && (e.Password == password));
             }

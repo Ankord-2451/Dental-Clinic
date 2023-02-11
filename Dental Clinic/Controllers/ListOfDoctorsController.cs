@@ -3,6 +3,7 @@ using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,11 +13,12 @@ namespace Dental_Clinic.Controllers
     public class ListOfDoctorsController : Controller
     {
         private ApplicationDbContext dbContext;
+        private IConfiguration configuration;
 
-        public ListOfDoctorsController(ApplicationDbContext _dbContext)
+        public ListOfDoctorsController(ApplicationDbContext _dbContext, IConfiguration _configuration)
         {
             dbContext = _dbContext;
-           
+            configuration= _configuration;
         }
 
         [AllowAnonymous]
@@ -72,6 +74,7 @@ namespace Dental_Clinic.Controllers
             var sessionWorker = new SessionWorker(HttpContext);
             if (sessionWorker.IsAdmin())
             {
+                Encoder.EncodeEmployee(configuration, employee);
                 dbContext.employees.Add(employee);
                 dbContext.SaveChanges();
                 return RedirectToAction(nameof(Index));
