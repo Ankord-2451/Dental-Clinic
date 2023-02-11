@@ -6,6 +6,10 @@
 }
 
 <h1> List Of Records </h1>
+<form asp-controller="DoctorsPage" asp-action="FindByDate">
+    <input type="datetime-local" name="date"/>
+     <input type="submit" value="Find" />
+</form>
 <br />
 <div class="text-center"><a asp-action="Index" asp-controller="Booking">+Create a new record</a></div>
 <br />

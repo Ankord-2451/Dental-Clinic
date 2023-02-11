@@ -29,11 +29,11 @@ namespace Dental_Clinic.Models
         public string Description { get; set; }
 
         [Required]
-        [StringLength(10, MinimumLength = 3)]
+        [StringLength(100,MinimumLength = 3)]
         public string Login { get; set; }
 
         [Required]
-        [StringLength(10, MinimumLength = 3)]
+        [StringLength(100, MinimumLength = 3)]
         public string Password { get; set; }
     }
 }
