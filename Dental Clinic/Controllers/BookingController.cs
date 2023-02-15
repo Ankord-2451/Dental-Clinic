@@ -1,10 +1,9 @@
-﻿using Dental_Clinic.Data;
+﻿using Dental_Clinic.Core;
+using Dental_Clinic.Data;
 using Dental_Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using NuGet.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Dental_Clinic.Controllers
 {
@@ -19,15 +18,45 @@ namespace Dental_Clinic.Controllers
 
 
         [HttpGet("Booking")]
-        public IActionResult Index()
+        public IActionResult Index(string Time_problem_message)
         {
+            var sessionWorker = new SessionWorker(HttpContext);
+
+            ViewData["Authorized"] = sessionWorker.IsAuthorized();
+
+            ViewData["ListOfDoctors"] = dbContext.employees.Where(e => e.Role == role.Doctor).ToList();
+
+                ViewData["ListOfProcedures"] = dbContext.ListOfProcedure.ToList();
+
+                ViewData["Time_problem_message"] = Time_problem_message;
+
             return View();
         }
 
         [HttpPost("Booking")]
-        public IActionResult Index(EmployeeModel employee)
-        {
-            return RedirectToAction(nameof(Index));
+        public IActionResult Index(EntryFormModel entryForm)
+        {  
+            string Time_problem_message = null;
+
+            if (ModelState.IsValid)
+            {
+              
+              ProcedureModel procedure = dbContext.ListOfProcedure.First(e => e.Name == entryForm.Procedure);
+              Time_problem_message = CheckTimeHelper.Check(
+                entryForm,
+                procedure.NeedHoursOnProcedure,
+                procedure.NeedMinutesOnProcedure,
+                dbContext.ListOfRecords.ToList()
+                    );
+
+
+                if (Time_problem_message == null)
+                {
+                   dbContext.ListOfRecords.Add(entryForm);
+                   dbContext.SaveChanges();
+                }
+            }
+            return Index(Time_problem_message);
         }
     }
 }

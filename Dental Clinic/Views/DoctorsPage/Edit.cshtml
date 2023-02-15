@@ -1,112 +1,109 @@
 ﻿@model Dental_Clinic.Models.EntryFormModel
 @{
-    ViewData["Title"] = "Booking Page";
+    ViewData["Title"] = "Edit Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h1 class="text-center">Dentist Booking form</h1>
+<h1 class="text-center">Edit</h1>
 
-@if ((bool)ViewData["Authorized"])
-{
-    <div class ="text-center">      
-    <a asp-action="Index" asp-controller="DoctorsPage">List Of Records</a>
-    </div>
-}
+<br />
+<br />
 
-    <br />
-    <br />
-
-    <form href="#" method="post">
-        <div class="bd">
-            <div align="center">
-                <div>
-                    Choose a procedure :
-                    <select asp-for="Procedure">
+<form href="#" method="post">
+    <div class="bd">
+        <div align="center">
+            <div>
+                Choose a procedure :
+                <select asp-for="Procedure" value="@Model.Procedure">
                     @foreach (var item in (List<ProcedureModel>)ViewData["ListOfProcedures"])
-                        {
-                            <option value=@item.Name>@item.Name</option>
-                        }
-                    </select>
+                    {
+                        <option value=@item.Name>@item.Name</option>
+                    }
+                </select>
                 <a asp-action="Index" asp-controller="ListOfProcedures">
                     <img width="15" height="15" src="data:image/png;base64,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" alt="" />
-                    </a>
+                </a>
 
-                </div>
-                <br />
-                <div>
-                    Choose a doctor :
-                    <select asp-for="Doctor">
-                        @foreach (var item in (List<EmployeeModel>)ViewData["ListOfDoctors"])
-                        {
-                            <option value=@item.Name>@item.Name</option>
-                        }
-                    </select>
+            </div>
+            <br />
+            <div>
+                Choose a doctor :
+                <select asp-for="Doctor" value="@Model.Doctor">
+                    @foreach (var item in (List<EmployeeModel>)ViewData["ListOfDoctors"])
+                    {
+                        <option value=@item.Name>@item.Name</option>
+                    }
+                </select>
 
                 <a asp-action="Index" asp-controller="ListOfDoctors">
                     <img width="15" height="15" src="data:image/png;base64,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" alt="" />
-                    </a>
-                </div>
-                <br />
-                <div>
-                    Check doctor availability :
-                <input type="datetime-local" asp-for="StartOfProcedure" />
+                </a>
+            </div>
+            <br />
+            <div>
+                Check doctor availability :
+                <input type="datetime-local" asp-for="StartOfProcedure" value="@Model.StartOfProcedure.ToString("s")" />
                 <span asp-validation-for="StartOfProcedure" class="text-danger"></span>
-                  
 
-                    @if ((string)ViewData["Time_problem_message"] != null)
-                    {
+                @((string)ViewData["Date-Time"])
+                @if ((string)ViewData["Time_problem_message"] != null)
+                {
                     <div class="text-danger">@ViewData["Time_problem_message"]</div>
-                    }
+                }
 
-                </div>
+            </div>
 
-                <br />
+            <br />
 
-                <hr width=85% size="5" color="black" />
+            <hr width=85% size="5" color="black" />
 
-                <br />
+            <br />
+
+            <div>
+                Your name:
+                <input type="text" asp-for="UserName" value="@Model.UserName" placeholder="name" />
 
                 <div>
-                    Your name:
-                    <input type="text" asp-for="UserName" placeholder="name" />
-
-                    <div>
                     <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-
                 </div>
-                <br />
-                <div>
-                    Your Phone number:
-                <input type="tel" asp-for="UserPhoneNumber" placeholder="number of phone" />
 
-                    <div>
+            </div>
+            <br />
+            <div>
+                Your Phone number:
+                <input type="tel" asp-for="UserPhoneNumber" value="@Model.UserPhoneNumber" placeholder="number of phone" />
+
+                <div>
                     <span asp-validation-for="UserPhoneNumber" class="text-danger"></span>
-                    </div>
-
                 </div>
-                <br />
-                <div>
 
-                    Your Email:
-                    <input type="email" asp-for="UserEmail" placeholder="email" />
-
-                    <div>
-                        <span asp-validation-for="UserEmail" class="text-danger"></span>
-                    </div>
-
-                </div>
-                <br />
-                <div>
-                    <textarea asp-for="Comment" placeholder="here comments"></textarea>
-                </div>
             </div>
             <br />
+            <div>
 
-            <div class="text-center">
-                <button type="submit">Book Now!</button>
+                Your Email:
+                <input type="email" asp-for="UserEmail" value="@Model.UserEmail" placeholder="email" />
+
+                <div>
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+
             </div>
-
             <br />
+            <div>
+                <textarea asp-for="Comment" value="@Model?.Comment" placeholder="here comments"></textarea>
+            </div>
         </div>
-    </form>
+        <br />
+
+        <div class="text-center">
+            <button type="submit">Edit</button>
+        </div>
+
+        <br />
+    </div>
+</form>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+

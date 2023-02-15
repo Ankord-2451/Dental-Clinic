@@ -1,8 +1,31 @@
-﻿
+﻿@model IEnumerable<Dental_Clinic.Models.ProcedureModel>
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>View</h1>
+<h1> List Of Procedures </h1>
 
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th><div class="text-center">Description</div></th>
+        <th><div class="text-center">Need Time For Procedure</div></th>
+        <th></th>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Name</td>
+               <td><div class="text-center"> @item.Description </div></td>
+                  <td><div class="text-center">Hours :@item.NeedHoursOnProcedure minuts : @item.NeedMinutesOnProcedure</div></td>
+                @if ((bool)ViewData["IsAdmin"])
+                {
+                <td><a asp-action="Details" asp-controller="ListOfProcedures" asp-route-id="@item.ID">Details</a></td>
+                }
+        </tr>
+        }
+</table>
+@if ((bool)ViewData["IsAdmin"])
+{
+    <div class="text-center"><a asp-action="Create" asp-controller="ListOfProcedures">+Add Procedure</a></div>
+}

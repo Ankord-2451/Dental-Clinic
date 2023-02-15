@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Dental_Clinic.Models.EntryFormModel>
+
+@{
+    ViewData["Title"] = "Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1> List Of Records </h1>
+<form asp-controller="DoctorsPage" asp-action="FindByDate">
+    <input type="datetime-local" name="date"/>
+     <input type="submit" value="Find" />
+</form>
+<br />
+<div class="text-center"><a asp-action="Index" asp-controller="Booking">+Create a new record</a></div>
+<br />
+    <table class="table">
+        <tr>
+        <th>ID</th>
+
+        <th>Name</th>
+
+        <th>Procedure</th>
+
+        <th><div class="text-center">Comment</div></th>
+
+        <th>Beginning</th>
+
+        <th>Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        @foreach (var item in Model)
+        {         
+        <tr>
+            <td>@item.ID</td>
+
+            <td>@item.UserName</td>
+
+            <td>@item.Procedure</td>
+
+            <td>
+
+                <div class="text-center">
+                 @if(item.Comment == null)
+                 {
+                 <h6>No Comment</h6>
+                 }
+                 else
+                 {
+                 <h6>@item.Comment</h6>           
+                 }
+                </div>
+            </td>
+
+            <td>@item.StartOfProcedure.ToString("g")</td>
+            
+                <td><a asp-action="Details" asp-controller="DoctorsPage" asp-route-id="@item.ID">Details</a></td>
+         
+                <td><a asp-action="Edit" asp-controller="DoctorsPage" asp-route-id="@item.ID">Edit</a></td> 
+             
+                <td>
+                 <form asp-controller="DoctorsPage" asp-action="Delete" method="post" asp-route-id="@item.ID">
+                    <input type="submit" value="Delete" />
+                 </form>
+                </td>
+            </tr> 
+        }
+    </table>
+    
+     
+   

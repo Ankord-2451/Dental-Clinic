@@ -19,6 +19,7 @@ namespace Dental_Clinic.Models
         [Required]
         public string Doctor { get; set; }
 
+        [Required]
         public DateTime StartOfProcedure { get; set; }
 
         public DateTime EndOfProcedure { get; set; }
